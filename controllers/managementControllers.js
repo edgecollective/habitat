@@ -4,7 +4,8 @@ const crypto = require("crypto");
 
 exports.postNewFeed = function(req, res, next) {
     // Extract into variables from request body
-    var { feed_name} = req.body;
+    //var { feed_name} = req.body;
+    var feed_name = req.body.feed_name;
 
     console.log(feed_name);
     

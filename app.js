@@ -11,6 +11,7 @@ var networkUtil = require('./utils/networkUtil');
 // Include routes
 var indexRouter = require('./routes/index');
 var dataRouter = require('./routes/data');
+var formDataRouter = require('./routes/formData');
 var manageRouter = require('./routes/manage');
 
 
@@ -27,6 +28,7 @@ app.use(passport.initialize())
 // Load routes
 app.use('/', indexRouter);
 app.use('/data', dataRouter);
+app.use('/formdata',formDataRouter);
 app.use('/manage',manageRouter);
 
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+	<meta charset = "UTF-8">
+	<link rel = "stylesheet" href="style.css">
+	<title> My Form </title>
+</head>
+<body>
+	<header>
+		<h1>Bayou:: Cooperative data service</h1>
+	</header>
+	<form action="/add" method="POST">
+		<fieldset>
+				<h3>Create a New Feed</h3>
+				<label>Feed Short Name </label>
+				<input type ="text" id = 'empID' name="id" placeholder="1,2,3..." required>
+				<br><br>
+
+				<label>Feed Description</label>
+				<input type="text" id = "name" name="name" placeholder="Tom Cruise" required>
+				<br><br>
+
+				<button type ="reset">Reset</button>
+				<button type ="submit">Submit</button>
+		</fieldset>
+	</form>
+	<form action="/view" method="POST">
+		<fieldset>
+				<h3>View an Existing Feed</h3>
+				<label>Feed Key</label>
+				<input type="text" id="empID" name="id" placeholder="1,2,3..." required>
+				<br><br>
+				<button type ="reset">Reset</button>
+				<button type ="submit">Submit</button>
+				<br><br><br>
+		</fieldset>
+	</form>
+	<footer>
+		<!--
+		<hr>
+		<h4>Please enter 'http://localhost:3000/close' to close the database connection before closing this window</h4>
+		-->
+	</footer>
+</body>
+</html>

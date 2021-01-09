@@ -3,6 +3,14 @@ const fs = require('fs');
 const fastcsv = require("fast-csv");
 const CsvParser = require("json2csv").Parser;
 
+
+exports.getPage = function(req, res, next) {
+
+    var feed_id = req.params.feed_id;
+    res.render('data',{feed: feed_id});
+
+}
+
 exports.getLatestMeasurement = function(req, res, next) {
 
     var feed_id = req.params.feed_id;

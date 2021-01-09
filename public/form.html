@@ -11,7 +11,7 @@
 	</header>
 	<form action="/manage" method="POST">
 		<fieldset>
-				<h3>Create a New Feed</h3>
+				<h3>Create a New Data Feed</h3>
 				<label>New Feed Name:</label>
 				<input type="text" id = "feed_name" name="feed_name" placeholder="Northwest Greenhouse" required>
 				<br><br>
@@ -19,29 +19,17 @@
 		</fieldset>
 	</form>
 <br>
-	<form action="/formData/csv" method="POST">
-		<fieldset>
-				<h3>Get CSV data for an Existing Feed</h3>
-				<label>Feed ID</label>
-				<input type="text" id="feed_id" name="feed_id" placeholder="1,2,3..." required>
-				<br><br>
-				<!--<button type ="reset">Reset</button>-->
-				<button type ="submit">CSV</button>
-				<br><br><br>
-		</fieldset>
-	</form>
-<br>
-	<form action="/formData/json" method="POST">
-		<fieldset>
-				<h3>Get JSON data for an Existing Feed</h3>
-				<label>Feed ID</label>
-				<input type="text" id="feed_id" name="feed_id" placeholder="1,2,3..." required>
-				<br><br>
-				<!--<button type ="reset">Reset</button>-->
-				<button type ="submit">JSON</button>
-				<br><br><br>
-		</fieldset>
-	</form>
+<form action="/formData" method="POST">
+	<fieldset>
+			<h3>View an Existing Data Feed</h3>
+			<label>Feed ID</label>
+			<input type="text" id="feed_id_page" name="feed_id" placeholder="1,2,3..." required>
+			<br><br>
+			<!--<button type ="reset">Reset</button>-->
+			<button type ="submit">View Data</button>
+			<br><br><br>
+	</fieldset>
+</form>
 	<footer>
 		<!--
 		<hr>

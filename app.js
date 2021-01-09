@@ -18,6 +18,8 @@ var manageRouter = require('./routes/manage');
 var app = express()
 var port = process.env['PORT']
 
+app.set('view engine', 'pug');
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

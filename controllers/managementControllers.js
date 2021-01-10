@@ -41,8 +41,9 @@ exports.postNewFeed = function(req, res, next) {
                     } else {
                         console.log(`New feed '${feed_name}' created `);
                         console.log(`with key '${private_key}'.\n`);
-                        res.status(200).send(`New feed '${feed_name}' created with private_key '${private_key}'.\n`);
-                        //process.exit(0);
+                        //res.status(200).send(`New feed '${feed_name}' created with private_key '${private_key}'.\n`);
+                        //var feed_id = req.params.feed_id;
+                        res.status(200).render('feed',{feed_name: feed_name,public_key:public_key,private_key:private_key});//process.exit(0);
                     }
                 });
            });

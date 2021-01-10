@@ -22,8 +22,18 @@ exports.postNewFeed = function(req, res, next) {
         crypto.randomBytes(24, function(err, buffer) {
             var private_key = buffer.toString('hex');
             
-                var insertSQL = "INSERT INTO feeds (name,private_key) VALUES ($1,$2);"
-                var params = [feed_name,private_key]
+            crypto.randomBytes(24, function(err, buffer) {
+
+                var public_key = buffer.toString('hex');
+            /*
+            db.query('SELECT * FROM pg_catalog.pg_tables', function(err, result) {
+                console.log("RESULTS:");
+                console.log(result);
+              });
+              */
+
+                var insertSQL = 'INSERT INTO feeds (name,public_key,private_key) VALUES ($1,$2,$3);'
+                var params = [feed_name,public_key,private_key]
                 db.query(insertSQL, params, (error, result) => {
                     if (error) {
                         console.log(`Error: ${error}`)
@@ -31,11 +41,13 @@ exports.postNewFeed = function(req, res, next) {
                     } else {
                         console.log(`New feed '${feed_name}' created `);
                         console.log(`with key '${private_key}'.\n`);
-                        res.status(200).send(`New feed '${feed_name}' created with key '${private_key}'.\n`);
+                        res.status(200).send(`New feed '${feed_name}' created with private_key '${private_key}'.\n`);
                         //process.exit(0);
                     }
                 });
            });
+
+        });
            
         
     

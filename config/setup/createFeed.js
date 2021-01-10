@@ -38,7 +38,11 @@ prompt.delimiter = "";
     var private_key = buffer.toString('hex');
     
         var insertSQL = "INSERT INTO feeds (name,private_key) VALUES ($1,$2);"
-        var params = [feedName,private_key]
+        var params = [feedName,private_key];
+        db.query('SELECT * FROM pg_catalog.pg_tables', function(err, result) {
+            console.log("RESULTS:");
+            console.log(result);
+          });
         db.query(insertSQL, params, (error, result) => {
             if (error) {
                 console.log(`Error: ${error}`)

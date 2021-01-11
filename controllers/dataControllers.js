@@ -3,6 +3,35 @@ const fs = require('fs');
 const fastcsv = require("fast-csv");
 const CsvParser = require("json2csv").Parser;
 
+const getFeedID = (feed_pubkey) => db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey]).then(response => response.rows[0].feed_id)
+.catch((err) => {
+    console.log("couldn't find feed_id for that key!");
+  });
+
+
+exports.getJSON = (req,res,next) =>  {
+
+    var feed_pubkey = String(req.params.feed_pubkey);
+
+    getFeedID(String(req.params.feed_pubkey))
+    .then((feed_id) => {
+    console.log("feed_pubkey",feed_pubkey);
+
+    console.log(feed_id);
+
+        db.query('SELECT * FROM measurements WHERE feed_id = $1', [feed_id], (err, results) => {
+            if (err) throw err
+
+            res.status(200).json(results.rows);
+
+        });
+    })
+    .catch((err) => {
+       console.log("couldn't get measurements for that feed_id!");
+      });
+   
+}
+
 exports.getPage = function(req, res, next) { // NOW BY PUB_KEY
 
     var feed_pubkey = req.params.feed_pubkey;
@@ -10,63 +39,26 @@ exports.getPage = function(req, res, next) { // NOW BY PUB_KEY
 
 }
 
-exports.getJSON = function(req, res, next) {  // NOW BY PUB_KEY
-
-    
-    var feed_pubkey = String(req.params.feed_pubkey);
-
-    console.log("feed_pubkey",feed_pubkey);
-
-    db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey], (err, results) => {
-        if (err) throw err
-
-        if (results.rows.length<1) throw 'no feeds exist with that public key!'
-
-        if (results.rows.length>1) throw 'more than one field with this public key!'
-
-        //if we got here, we've got a unique feed for this public Key
-
-        console.log(results.rows[0]);
-        var feed_id = results.rows[0].feed_id;
-
-        console.log("feed_id for this key is",feed_id)
-        db.query('SELECT * FROM measurements WHERE feed_id = $1', [feed_id], (err, results) => {
-            if (err) throw err
-
-            res.status(200).json(results.rows);
-
-        });
-
-      });
-}
-
 exports.getCSV = function(req, res, next) {  // NOW BY PUB KEY
 
     var feed_pubkey = String(req.params.feed_pubkey);
+
+    getFeedID(String(req.params.feed_pubkey))
+    .then((feed_id) => {
+
     console.log("feed_pubkey",feed_pubkey);
+    console.log(feed_id);
 
-
-    db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey], (err, results) => {
-        if (err) throw err
-
-        if (results.rows.length<1) throw 'no feeds exist with that public key!'
-
-        if (results.rows.length>1) throw 'more than one field with this public key!'
-
-        console.log(results.rows[0]);
-        var feed_id = results.rows[0].feed_id;
-
-    var ws = fs.createWriteStream('measurements.csv');
-
-    
     db.query('SELECT * FROM measurements WHERE feed_id = $1', [feed_id], (err, response) => {
 
     if (err) {
-    console.log("client.query()", err.stack)
+    console.log("db.query()", err.stack)
     }
     
     if (response) {
     
+        var ws = fs.createWriteStream('measurements.csv');
+
         console.log(response);
 
         if (response.rows.length>0){
@@ -88,34 +80,27 @@ exports.getCSV = function(req, res, next) {  // NOW BY PUB KEY
     }
     }
 });
-});
+    })
+    .catch((err) => {
+        console.log("couldn't download csv!");
+       });
+
 }
+
 
 exports.postNewMeasurement = function(req, res, next) {  // NOW BY PUB KEY
     // Extract into variables from request body
     //var {private_key, celcius, humidity } = req.body;
     var {private_key, co2, tempC, humidity, mic, auxPressure, auxTempC, aux001, aux002} = req.body;
 
-    var feed_pubkey = req.params.feed_pubkey;
+    var feed_pubkey = String(req.params.feed_pubkey);
+
+    getFeedID(String(req.params.feed_pubkey))
+    .then((feed_id) => {
 
     console.log(private_key,co2,tempC,humidity,mic,auxPressure,auxTempC,aux001,aux002);
 
-    //console.log(feed_pubkey);
     console.log(private_key);
-    //console.log(celcius);
-    //console.log(humidity);
-
-    db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey], (err, results) => {
-        if (err) throw err
-
-        if (results.length<1) throw 'no feeds exist with that public key!'
-
-        if (results.length>1) throw 'more than one field with this public key!'
-
-        //if we got here, we've got a unique feed for this public Key
-
-        console.log(results.rows[0]);
-        var feed_id = results.rows[0].feed_id;
 
       const query = {
         text: 'SELECT * FROM feeds WHERE feed_id = $1',
@@ -174,11 +159,12 @@ if (dataValid)  {
 
     }
 });
-    });
-
+    })
+    .catch((err) => {
+        console.log("couldn't get measurements for that feed_id!");
+       });
 }
 
-/*
 exports.getLatestMeasurement = function(req, res, next) {
 
     var feed_id = req.params.feed_id;
@@ -191,4 +177,4 @@ exports.getLatestMeasurement = function(req, res, next) {
         res.status(200).json(results.rows);
     });
 }
-*/
+

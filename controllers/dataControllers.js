@@ -76,7 +76,7 @@ exports.getCSV = function(req, res, next) {  // NOW BY PUB KEY
     //res.status(200).end(csvData);
     return res.status(200).send(csvData);
     } else {
-        res.status(400).send('No data yet for that feed.\n' );
+        res.status(400).send('No data yet for this feed.\n' );
     }
     }
 });

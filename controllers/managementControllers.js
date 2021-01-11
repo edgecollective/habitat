@@ -1,5 +1,6 @@
 var db = require('../config/database');
 require('dotenv').config({path: __dirname + '/../../.env'})
+var networkUtil = require('../utils/networkUtil');
 const crypto = require("crypto");
 
 exports.postNewFeed = function(req, res, next) {
@@ -43,7 +44,11 @@ exports.postNewFeed = function(req, res, next) {
                         console.log(`with key '${private_key}'.\n`);
                         //res.status(200).send(`New feed '${feed_name}' created with private_key '${private_key}'.\n`);
                         //var feed_id = req.params.feed_id;
-                        res.status(200).render('feed',{feed_name: feed_name,public_key:public_key,private_key:private_key});//process.exit(0);
+
+                        //use the IP address for the feed link; change this once we have a fixed URL:
+                        var ip = networkUtil.getIp();
+
+                        res.status(200).render('feed',{feed_name: feed_name,public_key:public_key,private_key:private_key,base_url:ip});//process.exit(0);
                     }
                 });
            });

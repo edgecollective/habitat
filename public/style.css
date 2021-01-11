@@ -17,6 +17,12 @@ h3{
 	background-color: #80bfff;
 }
 
+h4{
+	margin-top: 2px;
+	text-align: left;
+	background-color: pink;
+}
+
 form{
 	width: 45%;
 	display: inline-block;
@@ -26,4 +32,8 @@ form{
 footer{
 	margin-top: 3%;
 	text-align: center;
+}
+
+.high{
+    background-color: lightgreen;
 }

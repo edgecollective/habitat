@@ -1,7 +1,15 @@
-h2 Bayou Feed ID # #{feed_pubkey}
+doctype html
+html
+    head
+        meta(charset='UTF-8')
+        title Bayou
+        link(rel='stylesheet', href='/style.css')
 
-h2 Bayou Feed ID # #{feed_pubkey}
-p The url suffix for this feed is <a href="/data/#{feed}">/data/#{feed}</a>
+h2 <a href="/data/#{feed_pubkey}">#{feed_pubkey}</a>
 
-p Data downloads: <a href="/data/#{feed_pubkey}/csv/">CSV</a> | <a href="/data/#{feed_pubkey}/json/">JSON</a>
+p.high <b>Public Key:</b> #{feed_pubkey}
+p <b>Data downloads:</b> <a href="/data/#{feed_pubkey}/csv/">CSV</a> | <a href="/data/#{feed_pubkey}/json/">JSON</a>
 
+h2 Sending data to this feed
+
+h2 Analyzing data from this feed

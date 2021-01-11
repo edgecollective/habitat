@@ -4,57 +4,62 @@ const fastcsv = require("fast-csv");
 const CsvParser = require("json2csv").Parser;
 
 
-exports.getPage = function(req, res, next) {
+exports.getPage = function(req, res, next) { // NOW BY PUB_KEY
 
-    var feed_id = req.params.feed_id;
-    res.render('data',{feed: feed_id});
+    var feed_pubkey = req.params.feed_pubkey;
+    res.render('data',{feed_pubkey: feed_pubkey});
 
 }
 
-exports.getLatestMeasurement = function(req, res, next) {
+exports.getJSON = function(req, res, next) {  // NOW BY PUB_KEY
 
-    var feed_id = req.params.feed_id;
+    var feed_pubkey = String(req.params.feed_pubkey);
 
-    const query = `SELECT * FROM measurements WHERE feed_id = ${feed_id}  ORDER BY created DESC LIMIT 1`;
+    console.log("feed_pubkey",feed_pubkey);
 
-    db.query(query, (error, results) => {
-        if (error)
-            throw error;
-        res.status(200).json(results.rows);
-    });
+    db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey], (err, results) => {
+        if (err) throw err
+
+        if (results.rows.length<1) throw 'no feeds exist with that public key!'
+
+        if (results.rows.length>1) throw 'more than one field with this public key!'
+
+        //if we got here, we've got a unique feed for this public Key
+
+        console.log(results.rows[0]);
+        var feed_id = results.rows[0].feed_id;
+
+        console.log("feed_id for this key is",feed_id)
+        db.query('SELECT * FROM measurements WHERE feed_id = $1', [feed_id], (err, results) => {
+            if (err) throw err
+
+            res.status(200).json(results.rows);
+
+        });
+
+      });
 }
 
-exports.getJSON = function(req, res, next) {
+exports.getCSV = function(req, res, next) {  // NOW BY PUB KEY
 
-    var feed_id = req.params.feed_id;
-
-    const query = `SELECT * FROM measurements WHERE feed_id = ${feed_id}  ORDER BY created DESC`;
-
-    db.query(query, (error, results) => {
-        if (error)
-            throw error;
-        res.status(200).json(results.rows);
-    });
-}
+    var feed_pubkey = String(req.params.feed_pubkey);
+    console.log("feed_pubkey",feed_pubkey);
 
 
-exports.getCSV = function(req, res, next) {
+    db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey], (err, results) => {
+        if (err) throw err
 
-    var feed_id = req.params.feed_id;
+        if (results.rows.length<1) throw 'no feeds exist with that public key!'
+
+        if (results.rows.length>1) throw 'more than one field with this public key!'
+
+        console.log(results.rows[0]);
+        var feed_id = results.rows[0].feed_id;
 
     var ws = fs.createWriteStream('measurements.csv');
-    const tableName = 'measurements';
 
-    const query = `SELECT * FROM ${tableName} WHERE feed_id = ${feed_id}`;
-
-    /*
-    const query = {
-        text: 'SELECT * FROM $1 WHERE feed_id = $2',
-        values: ['measurements','1'],
-      }
-    */
-    // pass SQL string and table name to query()
-db.query(query, (err, response) => {
+    
+    db.query('SELECT * FROM measurements WHERE feed_id = $1', [feed_id], (err, response) => {
 
     if (err) {
     console.log("client.query()", err.stack)
@@ -62,6 +67,9 @@ db.query(query, (err, response) => {
     
     if (response) {
     
+        console.log(response);
+
+        if (response.rows.length>0){
     const jsonData = JSON.parse(JSON.stringify(response.rows));
     console.log("\njsonData:", jsonData)
     
@@ -75,58 +83,39 @@ db.query(query, (err, response) => {
 
     //res.status(200).end(csvData);
     return res.status(200).send(csvData);
+    } else {
+        res.status(400).send('No data yet for that feed.\n' );
     }
+    }
+});
 });
 }
 
-/*
-exports.getCSVviaPOST = function(req, res, next) {
-
-    //var feed_id = req.params.feed_id;
-    var feed_id = req.body.feed_id;
-
-    var ws = fs.createWriteStream('measurements.csv');
-    const tableName = 'measurements';
-
-    const query = `SELECT * FROM ${tableName} WHERE feed_id = ${feed_id}`;
-
-    // pass SQL string and table name to query()
-db.query(query, (err, response) => {
-
-    if (err) {
-    console.log("client.query()", err.stack)
-    }
-    
-    if (response) {
-    
-    const jsonData = JSON.parse(JSON.stringify(response.rows));
-    console.log("\njsonData:", jsonData)
-    
-    const csvFields = ["id", "feed_id", "created","celcius"];
-
-    const csvParser = new CsvParser({ csvFields });
-    const csvData = csvParser.parse(jsonData);
-
-    res.setHeader("Content-Type", "text/csv");
-    res.setHeader("Content-Disposition", "attachment; filename=measurements.csv");
-
-    //res.status(200).end(csvData);
-    return res.status(200).send(csvData);
-    }
-});
-}
-*/
-
-exports.postNewMeasurement = function(req, res, next) {
+exports.postNewMeasurement = function(req, res, next) {  // NOW BY PUB KEY
     // Extract into variables from request body
-    var {private_key, celcius, humidity } = req.body;
+    //var {private_key, celcius, humidity } = req.body;
+    var {private_key, co2, tempC, humidity, mic, auxPressure, auxTempC, aux001, aux002} = req.body;
 
-    var feed_id = req.params.feed_id;
+    var feed_pubkey = req.params.feed_pubkey;
 
-    console.log(feed_id);
+    console.log(private_key,co2,tempC,humidity,mic,auxPressure,auxTempC,aux001,aux002);
+
+    //console.log(feed_pubkey);
     console.log(private_key);
-    console.log(celcius);
-    console.log(humidity);
+    //console.log(celcius);
+    //console.log(humidity);
+
+    db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey], (err, results) => {
+        if (err) throw err
+
+        if (results.length<1) throw 'no feeds exist with that public key!'
+
+        if (results.length>1) throw 'more than one field with this public key!'
+
+        //if we got here, we've got a unique feed for this public Key
+
+        console.log(results.rows[0]);
+        var feed_id = results.rows[0].feed_id;
 
       const query = {
         text: 'SELECT * FROM feeds WHERE feed_id = $1',
@@ -147,16 +136,24 @@ exports.postNewMeasurement = function(req, res, next) {
         console.log("key match!");
 
   // Check if values are int, float and float
+
   var dataValid = (
-    //Number.isInteger(feed_id) &&
-    typeof celcius == 'number' && !Number.isInteger(celcius) &&
-    typeof humidity == 'number' && !Number.isInteger(humidity)
+    typeof co2 == 'number' &&
+    typeof tempC == 'number' &&
+    typeof humidity == 'number' &&
+    typeof mic == 'number' &&
+    typeof auxPressure == 'number' &&
+    typeof auxTempC == 'number' &&
+    typeof aux001 == 'number' &&
+    typeof aux002 == 'number'
 )
+
+console.log("dataValid=",dataValid)
 
 if (dataValid)  {
     // Create new measurement
-    var insertSQL = `INSERT INTO measurements (feed_id, celcius, humidity) VALUES ($1, $2, $3);`
-    var params = [feed_id, celcius, humidity]
+    var insertSQL = `INSERT INTO measurements (feed_id, co2, tempC, humidity, mic, auxpressure, auxTempC, aux001, aux002) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9);`
+    var params = [feed_id, co2, humidity, tempC, mic, auxPressure, auxTempC, aux001, aux002]
 
     db.query(insertSQL, params, (error, result) => {
         if (error) {
@@ -177,5 +174,21 @@ if (dataValid)  {
 
     }
 });
+    });
 
 }
+
+/*
+exports.getLatestMeasurement = function(req, res, next) {
+
+    var feed_id = req.params.feed_id;
+    
+    const query = `SELECT * FROM measurements WHERE feed_id = ${feed_id}  ORDER BY created DESC LIMIT 1`;
+
+    db.query(query, (error, results) => {
+        if (error)
+            throw error;
+        res.status(200).json(results.rows);
+    });
+}
+*/

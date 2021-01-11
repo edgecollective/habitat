@@ -11,8 +11,7 @@ exports.getPage = function(req, res, next) { // NOW BY PUB_KEY
 }
 
 exports.getJSON = function(req, res, next) {  // NOW BY PUB_KEY
-
-    
+  
     var feed_pubkey = String(req.params.feed_pubkey);
 
     console.log("feed_pubkey",feed_pubkey);
@@ -178,7 +177,6 @@ if (dataValid)  {
 
 }
 
-/*
 exports.getLatestMeasurement = function(req, res, next) {
 
     var feed_id = req.params.feed_id;
@@ -191,4 +189,4 @@ exports.getLatestMeasurement = function(req, res, next) {
         res.status(200).json(results.rows);
     });
 }
-*/
+

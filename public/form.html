@@ -22,34 +22,32 @@
         
         <p class="blurb"> <b>Open Hardware.</b> Bayou can receive data from <b>any device capable of making HTTP POST requests</b>.  Many inexpensive (<$50) microcontrollers can be programmed to do this (when connected to suitable CO2 sensors). You can find  some guidelines on doing this <a href="">here</a>. </p>
         
-        <p class="blurb"><b>DIY CO2 Sensor kits</b>. We have also have partnered with Pioneer Valley Open Science to distribute DIY CO2 monitoring kits that are pre-programmed to send CO2 data to Bayou. Click below to buy a kit (or to learn how to source the parts for your own DIY build):
-        </p>
+        <form action="/manage" method="POST">
+            <fieldset>
+                    <h3>Create a New CO2 Data Feed</h3>
+                    <label>New Feed Name:</label>
+                    <input type="text" id = "feed_name" name="feed_name" placeholder="Living room, Nortwest side" required>
+                    <br><br>
+                    <button type ="submit">Create new feed</button>
+            </fieldset>
+        </form>
+    <form action="/formData" method="POST">
+        <fieldset>
+                <h3>View an Existing CO2 Data Feed</h3>
+                <label>Feed Public Key:</label>
+                <input type="text" id="feed_id_page" name="feed_id" placeholder="421f1baf5ceccaaa9ad0891f4c96710062106b92189bf907" required>
+                <br><br>
+                <!--<button type ="reset">Reset</button>-->
+                <button type ="submit">View Data</button>
+        </fieldset>
+    </form>        
+    <hr>
+        <p class="blurb"><b>DIY CO2 Sensor kits</b>. We have also have partnered with <a href="http://pvos.org/">Pioneer Valley Open Science</a> to distribute <a href="">DIY CO2 monitoring kits</a> that we can distribute <b>pre-programmed to send CO2 data to Bayou</b>, with CO2 sensors that we have <b>assessed to be relatively accurate and reliable</b>. Click below to buy a kit , or to learn how to source the parts for your own DIY build:
         <p class = "kit"><a href=""><img src="https://edgecollective.io/img/co2/rev_e_collection.png">
             <br>Buy or Build a PVOS CO2 Sensor</a></p>
 
         
-
-        <hr>
-        
-    <form action="/manage" method="POST">
-		<fieldset>
-				<h3>Create a New CO2 Data Feed</h3>
-				<label>New Feed Name:</label>
-				<input type="text" id = "feed_name" name="feed_name" placeholder="Living room, Nortwest side" required>
-				<br><br>
-				<button type ="submit">Create new feed</button>
-		</fieldset>
-	</form>
-<form action="/formData" method="POST">
-	<fieldset>
-			<h3>View an Existing CO2 Data Feed</h3>
-			<label>Feed Public Key:</label>
-			<input type="text" id="feed_id_page" name="feed_id" placeholder="421f1baf5ceccaaa9ad0891f4c96710062106b92189bf907" required>
-			<br><br>
-			<!--<button type ="reset">Reset</button>-->
-			<button type ="submit">View Data</button>
-	</fieldset>
-</form>        
+    
 	<footer>
 		<!--
 		<hr>

@@ -5,17 +5,33 @@ html
         title Bayou
         link(rel='stylesheet', href='/style.css')
 
+<a href="/">Back to Bayou Home</a>
+
+<hr>
+
 h2 Feed: #{feed_pubkey} 
 
-p.high <b>Home Page</b>: <a href="/data/#{feed_pubkey}">#{base_url}/data/#{feed_pubkey}</a>
 p.high <b>Public Key:</b> #{feed_pubkey}
-p.high <b>Private Key:</b> (Secret! shhh ... :))
+p.high <b>Private Key:</b> [Secret]
+p.high <b>Home Page</b>: <a href="/data/#{feed_pubkey}">#{base_url}/data/#{feed_pubkey}</a>
 
-h2 Downloads
+p (In the future, you can always access this feed at its <a href="/data/#{feed_pubkey}">Home Page</a>.) 
+
+ul 
+li The feed's <b>Public Key</b> is a long, random string used to identify the feed. NOTE: this provides a simple, but realtively weak sort of privacy -- if you want to keep the data relatively private, avoid sharing the <b>Public Key</b> widely; anyone with access to this <b>Public Key</b> can access your feed data. 
+li The feed's <b>Private Key</b> is required in order to post new data to the feed.  This key was provided when the feed was created. (See the <a href="#adding">Adding feed data</a> section below.)
+li The <b>Home Page</b> is a link to this page; a feed home page is always '#{base_url}/data/[Feed Public Key]'.  
+
+
+h2 Downloading feed data
+
+p.blurb You can download historical data from this feed in CSV or JSON format below. The 'CSV' link should download automatically; you may need to 'right-click' on the JSON link to save it to a file (or choose 'File:Save' in your browser after following the link).
 
 p <a href="/data/#{feed_pubkey}/csv/">CSV</a> | <a href="/data/#{feed_pubkey}/json/">JSON</a>
 
-h2 Adding feed data
+h2 <a name="adding"></a> Adding new feed data
+
+p.blurb You can add new data to the feed using Bayou's REST API in several ways. Some common tools for adding data are shown below:
 
 h4 Curl
 

@@ -7,8 +7,18 @@
 </head>
 <body>
 	<header>
-		<h1>Bayou::cooperative sensor data::</h1>
-	</header>
+		<h1>Bayou: Cooperative Sensor Data</h1>
+    </header>
+    <p class="blurb">
+        <b>Bayou</b> is intended as a simple way of storing and accessing sensor data (e.g. for use in farming, air quality, flood detection, etc.). </p> 
+        
+        <p>All the code for <b>Bayou</b> is free and open source.  (More about <b>Bayou</b> <a href="/about">here</a>.)
+        </p>
+        <hr>
+        <p class="blurb">
+            You can <b>create a new data feed</b>, which will then display the necessary credentials for viewing and adding to your new data feed:
+        </p>
+
 	<form action="/manage" method="POST">
 		<fieldset>
 				<h3>Create a New Data Feed</h3>
@@ -18,12 +28,16 @@
 				<button type ="submit">Create new feed</button>
 		</fieldset>
 	</form>
-<br>
+<hr>
+<p>
+    You can also <b>view an existing data feed</b>, if you know the 'Public Key' for that data feed:
+                </p>
+
 <form action="/formData" method="POST">
 	<fieldset>
 			<h3>View an Existing Data Feed</h3>
-			<label>Feed ID</label>
-			<input type="text" id="feed_id_page" name="feed_id" placeholder="1,2,3..." required>
+			<label>Feed Public Key:</label>
+			<input type="text" id="feed_id_page" name="feed_id" placeholder="421f1baf5ceccaaa9ad0891f4c96710062106b92189bf907" required>
 			<br><br>
 			<!--<button type ="reset">Reset</button>-->
 			<button type ="submit">View Data</button>

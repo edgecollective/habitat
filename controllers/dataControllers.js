@@ -2,11 +2,13 @@ var db = require('../config/database');
 const fs = require('fs');
 const fastcsv = require("fast-csv");
 const CsvParser = require("json2csv").Parser;
+var networkUtil = require('../utils/networkUtil');
 
 const getFeedID = (feed_pubkey) => db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey]).then(response => response.rows[0].feed_id)
 .catch((err) => {
     console.log("couldn't find feed_id for that key!");
   });
+
 
 
 exports.getJSON = (req,res,next) =>  {
@@ -35,7 +37,10 @@ exports.getJSON = (req,res,next) =>  {
 exports.getPage = function(req, res, next) { // NOW BY PUB_KEY
 
     var feed_pubkey = req.params.feed_pubkey;
-    res.render('data',{feed_pubkey: feed_pubkey});
+     //use the IP address for the feed link; change this once we have a fixed URL:
+     var ip = networkUtil.getIp();
+
+    res.render('data',{feed_pubkey:feed_pubkey,base_url:ip});
 
 }
 

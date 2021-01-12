@@ -5,25 +5,14 @@ html
         title Bayou
         link(rel='stylesheet', href='/style.css')
 
-h1 You've created a new feed!
+h1 You've created a new data feed!
 
-h2 Details for Feed "#{feed_name}":
-
+p.high <b>Name:</b> "#{feed_name}"
 p.high <b>Public Key:</b> #{public_key}
 p.high <b>Private Key:</b> #{private_key}
-p.high <b>Home Page:</b> <a href="/data/#{public_key}">#{base_url}/data/#{public_key}</a>
+p.high <b>Feed Home Page:</b> <a href="/data/#{public_key}">#{base_url}/data/#{public_key}</a>
 
-p (NOTE: take note of the above information -- these keys won't be shown again! You can download them as a JSON file for safekeeping <a href="/">here</a>.)
-
-h2 Accessing your feed
-
-p You can download this feed's data in CSV, JSON, or view it in simple charts, via links you'll find at and see simple charts of the feed data, can all be found at <a href="/data/#{public_key}">this feed's home page</a>.
-
-h2 Adding new data to your feed
-
-p You'll need to use your <b>Private Key</b> (shown above), as well as your <b>Public Key</b>, in order to add data to your new feed. You can find instructions for sending data to your new feed (via Python, curl, microcontrollers, etc) at <a href="/data/#{public_key}">this feed's home page</a>.
-
-p Cheers!
+p (NOTE: please record the above information -- these keys won't be shown again! You can download the keys as a JSON file for safekeeping <a href="/">here</a>.)
 
 <hr>
 <a href="/">Back to Bayou Home</a>

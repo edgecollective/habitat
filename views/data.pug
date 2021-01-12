@@ -5,11 +5,24 @@ html
         title Bayou
         link(rel='stylesheet', href='/style.css')
 
-h2 <a href="/data/#{feed_pubkey}">#{feed_pubkey}</a>
+h2 Feed: #{feed_pubkey} 
 
+p.high <b>Home Page</b>: <a href="/data/#{feed_pubkey}">#{base_url}/data/#{feed_pubkey}</a>
 p.high <b>Public Key:</b> #{feed_pubkey}
-p <b>Data downloads:</b> <a href="/data/#{feed_pubkey}/csv/">CSV</a> | <a href="/data/#{feed_pubkey}/json/">JSON</a>
+p.high <b>Private Key:</b> (Secret! shhh ... :))
 
-h2 Sending data to this feed
+h2 Downloads
 
-h2 Analyzing data from this feed
+p <a href="/data/#{feed_pubkey}/csv/">CSV</a> | <a href="/data/#{feed_pubkey}/json/">JSON</a>
+
+h2 Adding feed data
+
+h4 Curl
+
+h4 Python
+
+h4 Microcontroller
+
+h2 Analyzing feed data
+
+h2 Graphs

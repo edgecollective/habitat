@@ -8,6 +8,7 @@ var logger = require('morgan');
 var passport = require('./config/passport');
 var networkUtil = require('./utils/networkUtil');
 var favicon = require('serve-favicon');
+var router = express.Router();
 
 // Include routes
 var indexRouter = require('./routes/index');

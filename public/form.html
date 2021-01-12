@@ -8,43 +8,48 @@
 </head>
 <body>
 	<header>
-		<h1>Bayou: Cooperative Sensor Data</h1>
+		<h1>Bayou-CO2: Cooperative CO2 Sensor Data</h1>
     </header>
+  
+
     <p class="blurb">
-        <b>Bayou</b> is intended as a simple way of storing and accessing sensor data (e.g. for use in farming, air quality, flood detection, etc.). </p> 
+        <b>Bayou-CO2</b> is intended as a simple way of storing and accessing CO2 sensor data.  Its creation was motivated by recent work (e.g. by <a href="https://www.medrxiv.org/content/10.1101/2020.06.15.20132027v2">Jimenez et al.</a>) indicating that monitoring indoor CO2 levels can (in some contexts) help to assess the risk of airborne SARS-CoV-2 transmission.</p>
         
-        <p class="blurb">All the code for <b>Bayou</b> is free and open source. More information, and source code, can be found <a href="/about">here</a>.)
-        </p>
-        <hr>
-        <p class="blurb">
-            You can <b>create a new data feed</b>, which will then display the necessary credentials for viewing and adding to your new data feed:
+        <p class="tinyblurb"><b>Support</b>: At <a href="https://edgecollective.io/">Edge Collective</a> we use donations and pay-as-you-can arrangements to support Bayou data hosting and development. To contribute, please visit our site on Open Collective <a href="https://opencollective.com/edgecollective">here</a>. Cheers!
         </p>
 
-	<form action="/manage" method="POST">
+        <p class="blurb"><b>Open Code / Open Data.</b> All the code for <b>Bayou-CO2</b> is free and open source. You can download all historical data as CSV or JSON. More information on how to send and receive data to/from Bayou is provided when you create a new feed, below. Source code and additional background can be found <a href="/about">here</a>.  </p>
+        
+        <p class="blurb"> <b>Open Hardware.</b> Bayou can receive data from <b>any device capable of making HTTP POST requests</b>.  Many inexpensive (<$50) microcontrollers can be programmed to do this (when connected to suitable CO2 sensors). You can find  some guidelines on doing this <a href="">here</a>. </p>
+        
+        <p class="blurb"><b>DIY CO2 Sensor kits</b>. We have also have partnered with Pioneer Valley Open Science to distribute DIY CO2 monitoring kits that are pre-programmed to send CO2 data to Bayou. Click below to buy a kit (or to learn how to source the parts for your own DIY build):
+        </p>
+        <p class = "kit"><a href=""><img src="https://edgecollective.io/img/co2/rev_e_collection.png">
+            <br>Buy or Build a PVOS CO2 Sensor</a></p>
+
+        
+
+        <hr>
+        
+    <form action="/manage" method="POST">
 		<fieldset>
-				<h3>Create a New Data Feed</h3>
+				<h3>Create a New CO2 Data Feed</h3>
 				<label>New Feed Name:</label>
-				<input type="text" id = "feed_name" name="feed_name" placeholder="Northwest Greenhouse" required>
+				<input type="text" id = "feed_name" name="feed_name" placeholder="Living room, Nortwest side" required>
 				<br><br>
 				<button type ="submit">Create new feed</button>
 		</fieldset>
 	</form>
-<hr>
-<p class="blurb">
-    You can also <b>view an existing data feed</b>, if you know the 'Public Key' for that data feed:
-                </p>
-
 <form action="/formData" method="POST">
 	<fieldset>
-			<h3>View an Existing Data Feed</h3>
+			<h3>View an Existing CO2 Data Feed</h3>
 			<label>Feed Public Key:</label>
 			<input type="text" id="feed_id_page" name="feed_id" placeholder="421f1baf5ceccaaa9ad0891f4c96710062106b92189bf907" required>
 			<br><br>
 			<!--<button type ="reset">Reset</button>-->
 			<button type ="submit">View Data</button>
-			<br><br><br>
 	</fieldset>
-</form>
+</form>        
 	<footer>
 		<!--
 		<hr>

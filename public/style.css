@@ -1,7 +1,7 @@
 body{
     background-color: #cce6ff;
     #font-family:sans-serif;
-    font-size:medium;
+    font-size: 15px;
     width:50%;
 }
 header{
@@ -33,9 +33,10 @@ li {
     font-size: medium;
 }
 form{
-	width: 50%;
+	width: 100%;
 	display: inline-block;
-	margin: 20px;
+    margin: 20px;
+    text-align:left;
 }
 
 footer{
@@ -50,13 +51,36 @@ footer{
     margin-left:20px;
 }
 
-
+img{
+    max-width:30%;
+margin-left:20px;
+max-height:100px;
+display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .blurb{
     #background-color: lightgreen;
-    width:60%;
-    font-size: medium;
+    width:100%;
+    font-size: 15px;
     margin-left: 20px;
 }
+
+.tinyblurb{
+    background-color: lightgreen;
+    width:100%;
+    font-size: 15px;
+    margin-left: 40px;
+}
+
+.kit{
+    #background-color:  lightgreen;
+    width:100%;
+    font-size: 16px;
+    margin-left: 20px;
+    text-align:center;
+}
+
 
 pre code {
     background-color: #eee;

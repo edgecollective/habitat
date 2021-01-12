@@ -4,22 +4,21 @@ const fastcsv = require("fast-csv");
 const CsvParser = require("json2csv").Parser;
 var networkUtil = require('../utils/networkUtil');
 
-const getFeedID = (feed_pubkey) => db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey]).then(response => response.rows[0].feed_id)
+
+const getFeedDetails = (feed_pubkey) => db.query('SELECT * FROM feeds WHERE public_key = $1', [feed_pubkey]).then(response => response.rows[0])
 .catch((err) => {
     console.log("couldn't find feed_id for that key!");
   });
-
 
 
 exports.getJSON = (req,res,next) =>  {
 
     var feed_pubkey = String(req.params.feed_pubkey);
 
-    getFeedID(String(req.params.feed_pubkey))
-    .then((feed_id) => {
-    console.log("feed_pubkey",feed_pubkey);
+    getFeedDetails(String(req.params.feed_pubkey))
+    .then((feed_params) => {
 
-    console.log(feed_id);
+    var feed_id = feed_params.feed_id;
 
         db.query('SELECT * FROM measurements WHERE feed_id = $1', [feed_id], (err, results) => {
             if (err) throw err
@@ -40,16 +39,22 @@ exports.getPage = function(req, res, next) { // NOW BY PUB_KEY
      //use the IP address for the feed link; change this once we have a fixed URL:
      var ip = networkUtil.getIp();
 
-    res.render('data',{feed_pubkey:feed_pubkey,base_url:ip});
-
+     getFeedDetails(String(req.params.feed_pubkey))
+     .then((feed_params) => {
+        console.log(feed_params);
+    res.render('data',{feed_pubkey:feed_params.public_key,feed_name:feed_params.name,base_url:ip});
+     }).catch((err) => {
+        console.log("Something went wrong with getPage!");
+       });
 }
 
 exports.getCSV = function(req, res, next) {  // NOW BY PUB KEY
 
     var feed_pubkey = String(req.params.feed_pubkey);
 
-    getFeedID(String(req.params.feed_pubkey))
-    .then((feed_id) => {
+    getFeedDetails(String(req.params.feed_pubkey))
+    .then((feed_params) => {
+        var feed_id = feed_params.feed_id;
 
     console.log("feed_pubkey",feed_pubkey);
     console.log(feed_id);
@@ -100,8 +105,9 @@ exports.postNewMeasurement = function(req, res, next) {  // NOW BY PUB KEY
 
     var feed_pubkey = String(req.params.feed_pubkey);
 
-    getFeedID(String(req.params.feed_pubkey))
-    .then((feed_id) => {
+    getFeedDetails(String(req.params.feed_pubkey))
+    .then((feed_params) => {
+        var feed_id = feed_params.feed_id;
 
     console.log(private_key,co2,tempC,humidity,mic,auxPressure,auxTempC,aux001,aux002);
 
@@ -171,9 +177,12 @@ if (dataValid)  {
 }
 
 exports.getLatestMeasurement = function(req, res, next) {
-
-    var feed_id = req.params.feed_id;
     
+    getFeedDetails(String(req.params.feed_pubkey))
+    .then((feed_params) => {
+        
+        var feed_id = feed_params.feed_id;
+
     const query = `SELECT * FROM measurements WHERE feed_id = ${feed_id}  ORDER BY created DESC LIMIT 1`;
 
     db.query(query, (error, results) => {
@@ -181,5 +190,10 @@ exports.getLatestMeasurement = function(req, res, next) {
             throw error;
         res.status(200).json(results.rows);
     });
+}).catch((err) => {
+    console.log("couldn't get latest measurement for this feed!");
+   });
+
+
 }
 

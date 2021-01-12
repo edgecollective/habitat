@@ -7,6 +7,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var passport = require('./config/passport');
 var networkUtil = require('./utils/networkUtil');
+var favicon = require('serve-favicon');
 
 // Include routes
 var indexRouter = require('./routes/index');
@@ -27,12 +28,14 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize())
 
+//app.use(favicon(__dirname + '/public/images/bayou_favicon.png'));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+
 // Load routes
 app.use('/', indexRouter);
 app.use('/data', dataRouter);
 app.use('/formdata',formDataRouter);
 app.use('/manage',manageRouter);
-
 
 
 app.listen(port, () => {

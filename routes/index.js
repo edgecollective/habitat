@@ -12,5 +12,9 @@ router.get('/', function(req,res, next){
   res.sendFile(path.join(__dirname,'../public/form.html')); //make this more robust?
 });
 
+router.get('/about/', function(req,res, next){
+    res.render('about');
+      });
+
 
 module.exports = router;

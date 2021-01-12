@@ -7,16 +7,15 @@ html
 
 h1 You've created a new feed!
 
-h4 <b>¡¡¡IMPORTANT!!</b> 
+h2 Details for Feed "#{feed_name}":
 
-p.high Please take note of the following information, as you won't be shown it again:
+p.high <b>Public Key:</b> #{public_key}
+p.high <b>Private Key:</b> #{private_key}
+p.high <b>Home Page:</b> <a href="/data/#{public_key}">#{base_url}/data/#{public_key}</a>
 
-p.high <b>Feed name:</b> "#{feed_name}"
-p.high <b>Feed Public Key:</b> #{public_key}
-p.high <b>Feed Private Key:</b> #{private_key}
-p.high <b>Feed Home Page:</b> <a href="/data/#{public_key}">#{base_url}/data/#{public_key}</a>
+p (NOTE: take note of the above information -- these keys won't be shown again! You can download them as a JSON file for safekeeping <a href="/">here</a>.)
 
-h2 Accessing your new feed
+h2 Accessing your feed
 
 p You can download this feed's data in CSV, JSON, or view it in simple charts, via links you'll find at and see simple charts of the feed data, can all be found at <a href="/data/#{public_key}">this feed's home page</a>.
 
